@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <title></title>
+</head>
+<body>
+  <p id="text">Connecting...</p>
+  <p id="member-count" style="display: none;">Active members: 0</p>
+  <script type="text/javascript" src="//js.pusher.com/3.1/pusher.min.js"> </script>
+  <script type="text/javascript">
+    var members = {}
+    var pusher = new Pusher('07a51219d95bf978b342');
+    var channel = pusher.subscribe('presence-users');
+    function updateMemberCount (count) {
+      var memberCount = document.getElementById('member-count');
+      memberCount.style.display = 'block'
+      memberCount.innerHTML = 'Active members ' + count.toString()
+    }
+    function addMember (id) {
+      members[id] = {}
+      updateMemberCount(Object.keys(members).length)
+    }
+    function removeMember (id) {
+      delete members[id]
+      updateMemberCount(Object.keys(members).length)
+    }
+    channel.bind('pusher:subscription_succeeded', function (response) {
+      var text = document.getElementById('text')
+      text.innerHTML = 'Hello there, ' + response.myID;
+      members = response.members
+      addMember(response.myID)
+    })
+    channel.bind('pusher:member_added', function (member) {
+      addMember(member.id)
+    });
+    channel.bind('pusher:member_removed', function (member) {
+      removeMember(member.id)
+    });
+  </script>
+</body>
+</html>

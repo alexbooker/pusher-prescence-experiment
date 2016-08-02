@@ -1,0 +1,13 @@
+{
+  "scripts": {
+    "start": "node index.js",
+    "dev": "nodemon --watch ./ --recursive --exec npm run start"
+  },
+  "dependencies": {
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "express-session": "^1.14.0",
+    "namor": "^0.2.1",
+    "pusher": "^1.3"
+  }
+}
